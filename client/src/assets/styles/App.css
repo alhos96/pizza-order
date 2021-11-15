@@ -1,0 +1,41 @@
+.Pizza {
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.small-title {
+  border-bottom: 2px solid #0d6efd;
+  width: fit-content;
+  margin-bottom: 10px;
+  margin-top: 25px;
+}
+
+.flexed {
+  display: flex;
+}
+
+.centered {
+  margin-left: 50%;
+  transform: translate(-50%);
+}
+
+#price {
+  text-align: right;
+  flex: 2;
+}
+
+#date {
+  text-align: right;
+  margin-top: -10px;
+  font-size: 13px;
+}
+
+.float-right {
+  float: right !important;
+}
+
+.normal-size-button {
+  width: 60px !important;
+}

@@ -1,0 +1,1 @@
+mongoimport --uri mongodb+srv://alhos996:alhos996@pizzaordercomposer.n9nav.mongodb.net/myFirstDatabase --collection ingredients --type JSON --file C:\users\hodzic\desktop\ingredients.json

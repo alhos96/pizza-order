@@ -1,0 +1,24 @@
+.item-name > h5 {
+  flex: 4;
+}
+
+.item-name > p {
+  height: 100%;
+  text-align: center;
+  padding-top: 20px;
+  flex: 1;
+}
+
+.counter-wrapp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.counter-input {
+  border: none;
+}
+
+.counter-input:focus {
+  outline: none;
+}
