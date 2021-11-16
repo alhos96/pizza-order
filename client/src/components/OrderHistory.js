@@ -11,6 +11,7 @@ function OrderHistory() {
   //local state
   const [loggedInUser, setLoggedInUser] = useState(sessionStorage.getItem("user"));
   const [orderHistory, setOrderHistory] = useState(null);
+  const [visibleOrders, setVisibleOrders] = useState(4);
 
   //send order to server
   useEffect(() => {
@@ -18,62 +19,68 @@ function OrderHistory() {
     if (user) sessionStorage.setItem("user", user);
   }, [user]);
   useEffect(() => {
-    getData("/order/order-history", setOrderHistory, user);
+    getData("/order/order-history", setOrderHistory, loggedInUser);
   }, []);
 
   return (
     <Card className="Pizza">
-      <Card.Header as="h5">Order history</Card.Header>
+      <Card.Header as="h5">Order hisstory</Card.Header>
       <Card.Body>
         {orderHistory &&
           orderHistory.map((order, i) => {
             let date = moment(order.createdAt).format("YYYY-MM-DD hh:mm");
-
-            return order.pizzas.map((pizza, i) => {
-              return (
-                <Row className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
-                  <div className="flexed">
-                    <h5>{pizza.dough}</h5>
-                  </div>
-                  <p>
-                    {" "}
-                    {pizza.ingredients.map((ingr, i) => {
-                      return ingr + ", ";
-                    })}{" "}
-                  </p>
-                  <div style={{ flex: "2", minWidth: "90px" }}>
-                    <p style={{ fontSize: "16px", fontWeight: "bold" }} id="price">
-                      {`${pizza.prices}$`}
+            if (i < visibleOrders) {
+              return order.pizzas.map((pizza, i) => {
+                return (
+                  <Row className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
+                    <div className="flexed">
+                      <h5>{pizza.dough}</h5>
+                    </div>
+                    <p>
+                      {" "}
+                      {pizza.ingredients.map((ingr, i) => {
+                        return ingr + ", ";
+                      })}{" "}
                     </p>
-                    <p id="date">{date}</p>{" "}
-                  </div>
-                  <hr></hr>
-                </Row>
-              );
-            });
+                    <div style={{ flex: "2", minWidth: "90px" }}>
+                      <p style={{ fontSize: "16px", fontWeight: "bold" }} id="price">
+                        {`${pizza.prices.toFixed(2)}$`}
+                      </p>
+                      <p id="date">{date}</p>{" "}
+                    </div>
+                    <hr></hr>
+                  </Row>
+                );
+              });
+            }
           })}
       </Card.Body>
+      <Card.Footer style={{ textAlign: "center" }}>
+        <Button
+          style={{ marginRight: "10px" }}
+          size="sm"
+          onClick={() => {
+            console.log(visibleOrders);
+            setVisibleOrders((e) => e + 4);
+          }}
+        >
+          Load more
+        </Button>
+        <Button
+          style={{ marginLeft: "10px" }}
+          size="sm"
+          onClick={() => {
+            console.log(visibleOrders);
+            if (visibleOrders > 4) {
+              setVisibleOrders((e) => e - 4);
+            }
+          }}
+        >
+          Show less
+        </Button>
+      </Card.Footer>
     </Card>
   );
 }
 
 export default OrderHistory;
-
-/* order.pizzas.map((pizza, i) => {
-  <Row className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
-    <div className="flexed">
-      <h5>{pizza.dough}</h5>
-    </div>
-    {pizza.ingredients.map((ingr, i) => {
-      <p>{`${ingr},`}</p>;
-    })}
-    <div style={{ flex: "2", minWidth: "90px" }}>
-      <p style={{ fontSize: "16px", fontWeight: "bold" }} id="price">
-        {`${pizza.prices}$`}
-      </p>
-      <p id="date">17.10.2021 17:10</p>{" "}
-    </div>
-    <hr></hr>
-  </Row>;
-});
- */
