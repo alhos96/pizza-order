@@ -54,7 +54,6 @@ exports.register = async (req, res, next) => {
     return next(err);
   }
 
-  console.log(confirmPassword, password);
   if (password !== confirmPassword) {
     res.status(403).json({
       message: "Password don't match",
@@ -156,7 +155,7 @@ exports.login = async (req, res, next) => {
   let token;
 
   try {
-    token = jwt.sign({ userId: existingUser.id }, "jabuka");
+    token = jwt.sign({ userId: existingUser.id }, process.env.JWT_SECRET);
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong when hashing pasword!",

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mogoose = require("mongoose");
 const cors = require("cors");
@@ -23,7 +24,7 @@ app.use("/adress", auth, adressRoute);
 app.use(express.static("./src/public"));
 
 mogoose
-  .connect("mongodb+srv://alhos996:alhos996@pizzaordercomposer.n9nav.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+  .connect(`${process.env.MONGO_URI}/${process.env.PROJECTNUMBERDB}?retryWrites=true&w=majority`)
   .then(() => {
     app.listen(PORT);
     console.log(`Server started on port ${PORT}`);
