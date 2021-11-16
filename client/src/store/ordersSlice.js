@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiRequestStarted } from "./apiActions";
+import _ from "lodash";
 
 const slice = createSlice({
   initialState: {
-    dough: [],
+    dough: "",
     chosenIngredients: [],
     amount: {
       doughPrice: [],
@@ -19,6 +20,7 @@ const slice = createSlice({
       },
       pizza: [],
     },
+    showOrderInfo: false,
   },
   name: "orders",
   reducers: {
@@ -31,14 +33,18 @@ const slice = createSlice({
       orders.amount.ingredientsPrice = payload.price;
     },
     pizzaMade: (orders, { payload }) => {
-      orders.dough = [];
+      orders.dough = "";
       orders.chosenIngredients = [];
       orders.amount = {
         doughPrice: [],
         ingredientsPrice: [],
       };
       orders.pizzas.pizza = payload.pizza;
-      orders.pizzas.total += payload.total;
+      orders.pizzas.total = orders.pizzas.pizza.map((e) => {
+        let price = 5;
+        return (price += e.prices);
+      });
+      orders.pizzas.total = _.sum(orders.pizzas.total);
     },
     pizzaOrdered: (orders, { payload }) => {
       orders.pizzas.orderInstructions.adress = payload.adress;
@@ -51,6 +57,31 @@ const slice = createSlice({
       orders.pizzas.orderInstructions.note = "";
       orders.pizzas.orderInstructions.paymentUponDelivery = false;
       orders.pizzas.pizza = [];
+      orders.showOrderInfo = true;
+    },
+    infoHidden: (orders, { payload }) => {
+      orders.showOrderInfo = false;
+    },
+
+    amountIncresed: (orders, { payload }) => {
+      orders.pizzas.pizza[payload.index].amount++;
+      orders.pizzas.pizza[payload.index].prices =
+        orders.pizzas.pizza[payload.index].amount * orders.pizzas.pizza[payload.index].priceForOne;
+      orders.pizzas.total = orders.pizzas.pizza.map((e) => {
+        let price = 5;
+        return (price += e.prices);
+      });
+      orders.pizzas.total = _.sum(orders.pizzas.total);
+    },
+    amountDecresed: (orders, { payload }) => {
+      if (orders.pizzas.pizza[payload.index].amount > 1) orders.pizzas.pizza[payload.index].amount--;
+      orders.pizzas.pizza[payload.index].prices =
+        orders.pizzas.pizza[payload.index].amount * orders.pizzas.pizza[payload.index].priceForOne;
+      orders.pizzas.total = orders.pizzas.pizza.map((e) => {
+        let price = 5;
+        return (price += e.prices);
+      });
+      orders.pizzas.total = _.sum(orders.pizzas.total);
     },
   },
 });
@@ -67,5 +98,6 @@ export const savePizza = (user, order, url, setError) => (dispatch, getState) =>
   );
 };
 
-export const { doughChosen, ingredientsChosen, pizzaMade, pizzaOrdered, pizzaSavedOnServer } = slice.actions;
+export const { doughChosen, ingredientsChosen, pizzaMade, pizzaOrdered, pizzaSavedOnServer, infoHidden, amountIncresed, amountDecresed } =
+  slice.actions;
 export default slice.reducer;
