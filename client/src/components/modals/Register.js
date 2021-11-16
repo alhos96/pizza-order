@@ -44,19 +44,19 @@ function Register() {
         <Modal.Body>
           <Form.Group className="mb-3" controlId="formGroupUsername">
             <Form.Label>Username</Form.Label>
-            <Form.Control onChange={handleChange} name="name" type="username" placeholder="Username" />
+            <Form.Control required onChange={handleChange} name="name" type="username" placeholder="Username" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formGroupEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control onChange={handleChange} name="email" type="email" placeholder="Enter email" />
+            <Form.Control required onChange={handleChange} name="email" type="email" placeholder="Enter email" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formGroupPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control onChange={handleChange} name="password" type="password" placeholder="Password" />
+            <Form.Control required onChange={handleChange} name="password" type="password" placeholder="Password" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formGroupConfirmPassword">
             <Form.Label>Confirm Password</Form.Label>
-            <Form.Control onChange={handleChange} name="confirmPassword" type="password" placeholder="Confirm Password" />
+            <Form.Control required onChange={handleChange} name="confirmPassword" type="password" placeholder="Confirm Password" />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
@@ -65,7 +65,7 @@ function Register() {
             variant="secondary"
             onClick={() => {
               dispatch(
-                actions.loginDisplayed({
+                loginDisplayed({
                   showLogin: true,
                   showRegister: false,
                 })
@@ -74,14 +74,7 @@ function Register() {
           >
             Have account? Login!
           </Button>
-          <Button
-            type="submit"
-            size="sm"
-            variant="primary"
-            onClick={() => {
-              dispatch(actions.registerClosed({ showRegister: false }));
-            }}
-          >
+          <Button type="submit" size="sm" variant="primary">
             Register
           </Button>
         </Modal.Footer>

@@ -53,11 +53,11 @@ function Login() {
         <Modal.Body>
           <Form.Group className="mb-3" controlId="formGroupEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control onChange={handleChange} name="email" type="email" placeholder="Enter email" />
+            <Form.Control onChange={handleChange} name="email" type="email" placeholder="Enter email" required />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formGroupPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control onChange={handleChange} name="password" type="password" placeholder="Password" />
+            <Form.Control onChange={handleChange} name="password" type="password" placeholder="Password" required />
           </Form.Group>
           <span className="error">{error}</span>
         </Modal.Body>
