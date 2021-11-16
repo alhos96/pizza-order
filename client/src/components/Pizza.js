@@ -45,7 +45,7 @@ function Pizza() {
                 <Button id={dough.price} className="float-right normal-size-button " size="sm" onClick={handleClick}>
                   +Add
                 </Button>
-                <p style={{ textAlign: "right", marginTop: "7px", marginRight: "75px" }}>{`${dough.price}`}</p>
+                <p style={{ textAlign: "right", marginTop: "7px", marginRight: "75px" }}>{`$${dough.price}`}</p>
               </div>
               <hr></hr>
             </Row>
