@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Card, Form, Row, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { pizzaOrdered, savePizza } from "../store/ordersSlice";
+import { pizzaOrdered, savePizza, infoHidden, amountIncresed, amountDecresed } from "../store/ordersSlice";
 import { addAdress } from "../store/adressHandlers";
 import { getData } from "./api/getData";
 
@@ -16,6 +16,7 @@ function Order() {
   const pizzas = useSelector((state) => state.orders.pizzas);
   const orderInstructionsTrigger = useSelector((state) => state.orders.pizzas.orderInstructions);
   const total = useSelector((state) => state.orders.pizzas.total);
+  const showOrderInfo = useSelector((state) => state.orders.showOrderInfo);
 
   //local states
   const [loggedInUser, setLoggedInUser] = useState("");
@@ -67,8 +68,14 @@ function Order() {
 
       dispatch(pizzaOrdered({ adress, paymentUponDelivery, note }));
       setError("");
-      //history.push("/");
     }
+  }
+
+  function clickPlus(e) {
+    dispatch(amountIncresed({ index: e.target.id }));
+  }
+  function clickMinus(e) {
+    dispatch(amountDecresed({ index: e.target.id }));
   }
 
   return (
@@ -129,6 +136,7 @@ function Order() {
             <div style={{ paddingLeft: "20px" }} key="default-radio" className="mb-3">
               <div className="flexed">
                 <Form.Check
+                  checked
                   onChange={onPaymentType}
                   type="checkbox"
                   id="default-checkbox-payment"
@@ -142,6 +150,7 @@ function Order() {
             <h6 className="small-title">YOUR ORDER</h6>
 
             {/* Selected dough, price and number input to increase the amount */}
+
             {pizzas.pizza.map((pizza, i) => {
               return (
                 <>
@@ -151,7 +160,9 @@ function Order() {
                       <h5>{pizza.dough}</h5>
                       <p>${pizza.prices.toFixed(2)}</p>
                       <div className="counter-wrapp" style={{ width: "80px" }}>
-                        <Button size="sm">-</Button>
+                        <Button onClick={clickMinus} id={i} size="sm">
+                          -
+                        </Button>
 
                         <input
                           className="flexed counter-input"
@@ -159,8 +170,11 @@ function Order() {
                           type="text"
                           value={pizza.amount}
                           readOnly
-                        ></input>
-                        <Button size="sm">+</Button>
+                        />
+
+                        <Button onClick={clickPlus} id={i} size="sm">
+                          +
+                        </Button>
                       </div>
                     </div>
                     <p>
@@ -177,7 +191,7 @@ function Order() {
             <Row className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
               <div className="flexed">
                 <p id="delivery">Delivery</p>
-                <p id="price">{delivery}</p>
+                <p id="price">{delivery.toFixed(2)}</p>
               </div>
               <hr></hr>
               <div className="flexed">
@@ -192,9 +206,25 @@ function Order() {
             <hr></hr>
             <Form.Control onChange={onNoteType} as="textarea" placeholder="Leave an optional note" />
             <p>{error}</p>
-            <Button onClick={onOrder} type="submit" className="normal-size-button centered mt-2" size="sm">
-              Order
-            </Button>
+            {showOrderInfo ? (
+              <>
+                <p> Order is on it's way</p>
+                <Button
+                  onClick={() => {
+                    history.push("/");
+                    dispatch(infoHidden());
+                  }}
+                  className="normal-size-button centered mt-2"
+                  size="sm"
+                >
+                  Home
+                </Button>
+              </>
+            ) : (
+              <Button onClick={onOrder} type="submit" className="normal-size-button centered mt-2" size="sm">
+                Order
+              </Button>
+            )}
           </Card.Body>
         </Card>
       </Form>
