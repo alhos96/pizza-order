@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Button, Row } from "react-bootstrap";
 import { loginDisplayed } from "../store/modalHandlers";
+import { amountIncresed, amountDecresed } from "../store/ordersSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -37,6 +38,12 @@ function Cart() {
       history.push("/order/finish-order");
     }
   }
+  function clickPlus(e) {
+    dispatch(amountIncresed({ index: e.target.id }));
+  }
+  function clickMinus(e) {
+    dispatch(amountDecresed({ index: e.target.id }));
+  }
 
   return (
     <Container className="Cart">
@@ -56,22 +63,18 @@ function Cart() {
                     <h5>{pizza.dough}</h5>
                     <p>${pizza.prices.toFixed(2)}</p>
                     <div className="counter-wrapp" style={{ width: "80px" }}>
-                      <Button size="sm">-</Button>
+                      <Button id={i} onClick={clickMinus} size="sm">
+                        -
+                      </Button>
 
                       <input
                         className="flexed counter-input"
                         style={{ width: "80%", height: "100%", textAlign: "center" }}
                         type="text"
-                        value={1 * num}
+                        value={pizza.amount}
                         readOnly
                       ></input>
-                      <Button
-                        onClick={() => {
-                          num = num + 1;
-                        }}
-                        id={i}
-                        size="sm"
-                      >
+                      <Button id={i} onClick={clickPlus} id={i} size="sm">
                         +
                       </Button>
                     </div>
@@ -90,7 +93,7 @@ function Cart() {
           <Row className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
             <div className="flexed">
               <p id="delivery">Delivery</p>
-              <p id="price">{delivery}</p>
+              <p id="price">${delivery.toFixed(2)}</p>
             </div>
             <hr></hr>
             <div className="flexed">
