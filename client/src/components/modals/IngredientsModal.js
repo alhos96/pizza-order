@@ -40,6 +40,7 @@ export default function IngredientsModal() {
           ingredients: orders.chosenIngredients,
           //+ infront of a and b is converting string to number
           amount: 1,
+          priceForOne: +orders.amount.doughPrice + +orders.amount.ingredientsPrice.reduce((a, b) => +a + +b, 0),
           prices: +orders.amount.doughPrice + +orders.amount.ingredientsPrice.reduce((a, b) => +a + +b, 0),
         },
       ]);
@@ -103,7 +104,7 @@ export default function IngredientsModal() {
                       id={`default-checkbox-${ingredient.name}`}
                       label={ingredient.name}
                     />
-                    <p id="price">{ingredient.price}</p>
+                    <p id="price">${ingredient.price}</p>
                   </div>
                 </div>
               ))}{" "}
