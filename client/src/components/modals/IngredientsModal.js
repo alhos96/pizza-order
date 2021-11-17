@@ -59,7 +59,7 @@ export default function IngredientsModal() {
 
     setPizza({
       dough: orders.dough,
-      ingredients: orders.chosenIngredients,
+      ingredients: chosenIngredients,
       //+ infront of a and b is converting string to number
       amount: 1,
       priceForOne: +orders.amount.doughPrice + +orders.amount.ingredientsPrice.reduce((a, b) => +a + +b, 0),
