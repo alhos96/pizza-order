@@ -25,7 +25,7 @@ function Header() {
 
   return (
     <Navbar className="Navbar" sticky="top" expand={false}>
-      <Navbar.Brand href="#">
+      <Navbar.Brand href="/">
         <Image src={logo} fluid />
       </Navbar.Brand>
       <div className="icons-wrapp">
