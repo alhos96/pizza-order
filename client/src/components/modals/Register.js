@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/modalHandlers";
 import { Button, Modal, Form } from "react-bootstrap";
@@ -9,10 +9,23 @@ function Register() {
 
   //redux state
   const state = useSelector((state) => state.modals);
+  const registered = useSelector((state) => state.users.registrationSuccessfull);
 
   //local state
   const [error, setError] = useState("");
   const [userInput, setUserInput] = useState({ name: "", email: "", password: "", confirmPassword: "" });
+
+  //sideeffects
+  useEffect(() => {
+    if (registered) {
+      dispatch(
+        loginDisplayed({
+          showLogin: true,
+          showRegister: false,
+        })
+      );
+    }
+  }, [registered]);
 
   //user action handlers
   function handleChange(e) {
@@ -21,12 +34,15 @@ function Register() {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(userRegister(userInput.name, userInput.email, userInput.password, userInput.confirmPassword, "/users/register", setError));
-    dispatch(
-      loginDisplayed({
-        showLogin: true,
-        showRegister: false,
-      })
-    );
+
+    if (registered) {
+      dispatch(
+        loginDisplayed({
+          showLogin: true,
+          showRegister: false,
+        })
+      );
+    }
   }
 
   return (
@@ -58,18 +74,21 @@ function Register() {
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control required onChange={handleChange} name="confirmPassword" type="password" placeholder="Confirm Password" />
           </Form.Group>
+          <p>{error}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button
             size="sm"
             variant="secondary"
             onClick={() => {
-              dispatch(
-                loginDisplayed({
-                  showLogin: true,
-                  showRegister: false,
-                })
-              );
+              if (registered) {
+                dispatch(
+                  loginDisplayed({
+                    showLogin: true,
+                    showRegister: false,
+                  })
+                );
+              }
             }}
           >
             Have account? Login!
