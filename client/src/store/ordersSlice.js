@@ -39,7 +39,7 @@ const slice = createSlice({
         doughPrice: [],
         ingredientsPrice: [],
       };
-      orders.pizzas.pizza = payload.pizza;
+      orders.pizzas.pizza = [...orders.pizzas.pizza, payload.pizza];
       orders.pizzas.total = orders.pizzas.pizza.map((e) => {
         let price = 5;
         return (price += e.prices);
