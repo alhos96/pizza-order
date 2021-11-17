@@ -28,26 +28,10 @@ export default function IngredientsModal() {
     //kada dodbijem sastojke postavim ih u checked state zato sto se ingredients niz ne smije mjenjati jer ce se i cijene mijenjati,
     setCheckedState(ingredients);
   }, [ingredients]);
-  useEffect(() => {
-    //nakon sto se zavrsi narudzbas dodaj sve u jednu pizzu i izracunaj ukupnu cijenus
-    orders.chosenIngredients.length > 0 &&
-      setTotal(+orders.amount.doughPrice + +orders.amount.ingredientsPrice.reduce((a, b) => +a + +b, 0));
-    orders.chosenIngredients.length > 0 &&
-      setPizza([
-        ...pizza,
-        {
-          dough: orders.dough,
-          ingredients: orders.chosenIngredients,
-          //+ infront of a and b is converting string to number
-          amount: 1,
-          priceForOne: +orders.amount.doughPrice + +orders.amount.ingredientsPrice.reduce((a, b) => +a + +b, 0),
-          prices: +orders.amount.doughPrice + +orders.amount.ingredientsPrice.reduce((a, b) => +a + +b, 0),
-        },
-      ]);
-  }, [orders]);
+
   useEffect(() => {
     //kad se napravi jedna pizza ocisti orders state u reuduxu kakoo bi se sljedeca narudzba mogla napraviti i stavi pizzu i total u state
-    orders.chosenIngredients.length > 0 && dispatch(pizzaMade({ pizza, total }));
+    orders.dough && dispatch(pizzaMade({ pizza, total }));
   }, [pizza]);
 
   //user action handlers
@@ -68,6 +52,18 @@ export default function IngredientsModal() {
     //restartuj sve checkove na false.
     checkedState.map((ingredient) => {
       if (ingredient.checked === true) ingredient.checked = false;
+    });
+    //nakon sto se zavrsi narudzbas dodaj sve u jednu pizzu i izracunaj ukupnu cijenus
+
+    setTotal(+orders.amount.doughPrice + +orders.amount.ingredientsPrice.reduce((a, b) => +a + +b, 0));
+
+    setPizza({
+      dough: orders.dough,
+      ingredients: orders.chosenIngredients,
+      //+ infront of a and b is converting string to number
+      amount: 1,
+      priceForOne: +orders.amount.doughPrice + +orders.amount.ingredientsPrice.reduce((a, b) => +a + +b, 0),
+      prices: +orders.amount.doughPrice + +orders.amount.ingredientsPrice.reduce((a, b) => +a + +b, 0),
     });
   }
 
