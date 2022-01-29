@@ -39,69 +39,63 @@ function Cart() {
     }
   }
   function clickPlus(e) {
-    dispatch(amountIncresed({ index: e.target.id }));
+    dispatch(amountIncresed({ index: e.target.id })); //increase amount of pizzas
   }
   function clickMinus(e) {
-    dispatch(amountDecresed({ index: e.target.id }));
+    dispatch(amountDecresed({ index: e.target.id })); //decrease amount of pizzas
   }
 
   return (
     <Container className="Cart">
       <h6 className="small-title">YOUR ORDER</h6>
 
-      {/*    */}
-
       {pizzas.length > 0 ? (
         <>
           {pizzas.map((pizza, i) => {
-            let num = 1;
             return (
-              <>
-                {" "}
-                <Row className="cart-items" style={{ display: "flex" }}>
-                  <div className="flexed item-name">
-                    <h5>{pizza.dough}</h5>
-                    <p>${pizza.prices.toFixed(2)}</p>
-                    <div className="counter-wrapp" style={{ width: "80px" }}>
-                      <Button id={i} onClick={clickMinus} size="sm">
-                        -
-                      </Button>
+              <Row key={`${pizza.dough}${i}`} className="cart-items" style={{ display: "flex" }}>
+                <div className="d-flex item-name">
+                  <h5>{pizza.dough}</h5>
+                  <p>${pizza.prices.toFixed(2)}</p>
+                  <div className="counter-wrapp" style={{ width: "80px" }}>
+                    <Button id={i} onClick={clickMinus} size="sm">
+                      -
+                    </Button>
 
-                      <input
-                        className="flexed counter-input"
-                        style={{ width: "80%", height: "100%", textAlign: "center" }}
-                        type="text"
-                        value={pizza.amount}
-                        readOnly
-                      ></input>
-                      <Button id={i} onClick={clickPlus} id={i} size="sm">
-                        +
-                      </Button>
-                    </div>
+                    <input
+                      className="d-flex counter-input"
+                      style={{ width: "80%", height: "100%", textAlign: "center" }}
+                      type="text"
+                      value={pizza.amount}
+                      readOnly
+                    ></input>
+                    <Button id={i} onClick={clickPlus} size="sm">
+                      +
+                    </Button>
                   </div>
-                  <p>
-                    {pizza.ingredients.length > 0 &&
-                      pizza.ingredients.map((ingredient, i) => {
-                        return `${ingredient}, `;
-                      })}
-                  </p>
-                </Row>
-              </>
+                </div>
+                <p>
+                  {pizza.ingredients.length > 0 &&
+                    pizza.ingredients.map((ingredient, i) => {
+                      return `${ingredient}, `;
+                    })}
+                </p>
+              </Row>
             );
           })}
 
           <Row className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
-            <div className="flexed">
+            <div className="d-flex">
               <p id="delivery">Delivery</p>
               <p id="price">${delivery.toFixed(2)}</p>
             </div>
             <hr></hr>
-            <div className="flexed">
-              <p id="total" className="bold">
-                TOTAL
+            <div className="d-flex">
+              <p id="total">
+                <strong>TOTAL</strong>
               </p>
-              <p className="bold" id="price">
-                ${total.toFixed(2)}
+              <p id="price">
+                <strong>${total.toFixed(2)}</strong>
               </p>
             </div>
           </Row>

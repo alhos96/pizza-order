@@ -25,6 +25,7 @@ function Register() {
         })
       );
     }
+    //eslint-disable-next-line
   }, [registered]);
 
   //user action handlers

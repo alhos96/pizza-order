@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Button, Card } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import { getData } from "./api/getData";
 
@@ -18,8 +18,10 @@ function OrderHistory() {
     setLoggedInUser(sessionStorage.getItem("user"));
     if (user) sessionStorage.setItem("user", user);
   }, [user]);
+
   useEffect(() => {
     getData("/order/order-history", setOrderHistory, loggedInUser);
+    //eslint-disable-next-line
   }, []);
 
   return (
@@ -27,13 +29,14 @@ function OrderHistory() {
       <Card.Header as="h5">Order hisstory</Card.Header>
       <Card.Body>
         {orderHistory &&
+          //eslint-disable-next-line
           orderHistory.map((order, i) => {
             let date = moment(order.createdAt).format("YYYY-MM-DD hh:mm");
             if (i < visibleOrders) {
               return order.pizzas.map((pizza, i) => {
                 return (
-                  <Row className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
-                    <div className="flexed">
+                  <Row key={`${i} ${pizza.dough}`} className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
+                    <div className="d-flex">
                       <h5>{pizza.dough}</h5>
                     </div>
                     <p>

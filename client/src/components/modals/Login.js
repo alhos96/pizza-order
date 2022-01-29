@@ -22,6 +22,7 @@ function Login() {
     //ugasi llogin modal samo ako se user uspjesno logovao, cleanup ocisti potencijalni error
     loggedIn && dispatch(actions.loginClosed({ showLogin: false }));
     return setError("");
+    //eslint-disable-next-line
   }, [loggedIn]);
 
   //user action handlers

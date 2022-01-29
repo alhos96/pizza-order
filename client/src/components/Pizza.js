@@ -16,10 +16,12 @@ function Pizza() {
   //side effects
   useEffect(() => {
     dough.length === 0 && getData("/dough.json", setDough);
+    //eslint-disable-next-line
   }, []);
   useEffect(() => {
     //kada user odabere tijesto u redux saljen tijesto i cijenu osim prvi put kad se izrenda komponenta. Tada je ovaj niz manji od 0
     pickedDough.length > 0 && dispatch(doughChosen({ pickedDough, price }));
+    //eslint-disable-next-line
   }, [pickedDough]);
 
   //user action handlers

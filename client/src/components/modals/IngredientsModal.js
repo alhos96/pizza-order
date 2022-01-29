@@ -23,6 +23,7 @@ export default function IngredientsModal() {
   useEffect(() => {
     // dobavi sastojke
     ingredients.length === 0 && getData("/ingredients.json", setIngredients);
+    //eslint-disable-next-line
   }, []);
   useEffect(() => {
     //kada dodbijem sastojke postavim ih u checked state zato sto se ingredients niz ne smije mjenjati jer ce se i cijene mijenjati,
@@ -32,6 +33,7 @@ export default function IngredientsModal() {
   useEffect(() => {
     //kad se napravi jedna pizza ocisti orders state u reuduxu kakoo bi se sljedeca narudzba mogla napraviti i stavi pizzu i total u state
     orders.dough && dispatch(pizzaMade({ pizza, total }));
+    //eslint-disable-next-line
   }, [pizza]);
 
   //user action handlers
@@ -44,12 +46,14 @@ export default function IngredientsModal() {
     let chosenIngredients = [];
     let chosenIngredientsPrice = [];
 
+    //eslint-disable-next-line
     checkedState.map((ingredient) => {
       ingredient.checked && chosenIngredients.push(ingredient.name);
       ingredient.checked && chosenIngredientsPrice.push(ingredient.price);
     });
     dispatch(ingredientsChosen({ chosenIngredients, price: chosenIngredientsPrice }));
     //restartuj sve checkove na false.
+    //eslint-disable-next-line
     checkedState.map((ingredient) => {
       if (ingredient.checked === true) ingredient.checked = false;
     });
@@ -84,7 +88,7 @@ export default function IngredientsModal() {
             {checkedState &&
               checkedState.map((ingredient, i) => (
                 <div key={`default-checkbox-${i}`} className="mb-3">
-                  <div id={ingredient.price} className="flexed">
+                  <div id={ingredient.price} className="d-flex">
                     {ingredient.gluten_free ? (
                       <img style={{ marginRight: "4px" }} width="18px" src={glutenfree} alt="gluten_free" title="gluten free" />
                     ) : (

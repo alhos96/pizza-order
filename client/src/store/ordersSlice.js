@@ -69,6 +69,7 @@ const slice = createSlice({
         orders.pizzas.pizza[payload.index].amount * orders.pizzas.pizza[payload.index].priceForOne;
       orders.pizzas.total = orders.pizzas.pizza.map((e) => {
         let price = 5;
+
         return (price += e.prices);
       });
       orders.pizzas.total = _.sum(orders.pizzas.total);
