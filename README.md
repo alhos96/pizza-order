@@ -26,9 +26,9 @@ Users can:
 #### backend
 
 After cloning repository and opening it in terminal type command `cd server` and add your own **.env** file with following variables: 
--**PORT** use 5000; 
--**MONGO_URI** (if you don't provide mongo uri, local instance will be used on port :27017);
--**JWT_SECRET** . 
+- **PORT** use 5000; 
+- **MONGO_URI** (if you don't provide mongo uri, local instance will be used on port :27017);
+- **JWT_SECRET** . 
 
 After that run `npm install` to install all the dependencies. After completing these steps run `npm start` script.
 
