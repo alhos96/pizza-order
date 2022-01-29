@@ -21,6 +21,7 @@ function Order() {
   //local states
   const [loggedInUser, setLoggedInUser] = useState("");
   const [userAdresses, setUserAdresses] = useState([]);
+  //eslint-disable-next-line
   const [delivery, setDelivery] = useState(5);
   const [error, setError] = useState("");
   const [newAdress, setNewAdress] = useState({ adress: "", floor: "" });
@@ -28,17 +29,18 @@ function Order() {
 
   //side effects
   useEffect(() => {
-    //ovo moram popraviti jer posatavljam usera iz reduxa u session storage
-    //treba postaviti usera na osnovu session storagea jer postoji mogucnost da ne mgne nauriciti ako se slucajno ponisti user u reduxu
     if (user) sessionStorage.setItem("user", user);
     setLoggedInUser(sessionStorage.getItem("user"));
   }, [user]);
+
   useEffect(() => {
     getData("/adress/get-adresses", setUserAdresses, loggedInUser);
   }, [loggedInUser, addedAdress]);
+
   useEffect(() => {
-    //send order to server
+    //when user ads order instructions send order to database
     if (orderInstructionsTrigger.adress !== "") dispatch(savePizza(loggedInUser, pizzas, "/order/finish-order", setError));
+    //eslint-disable-next-line
   }, [orderInstructionsTrigger]);
 
   //user action handlers
@@ -59,6 +61,7 @@ function Order() {
   function onNoteType(e) {
     setOrderInstructions({ ...orderInstructions, note: e.target.value });
   }
+
   function onOrder(e) {
     e.preventDefault();
     if (!orderInstructions.adress) {
@@ -81,82 +84,81 @@ function Order() {
   return (
     <Container className="Order">
       <Form onSubmit={onOrder}>
-        {/* User adresses mapped */}
-        <Card>
-          <Card.Header as="h5">Address to deliver</Card.Header>
-          <Card.Body>
-            {" "}
-            <div key="default-radio" className="mb-3">
-              {userAdresses &&
-                userAdresses.map((adress) => (
-                  <Card className="mb-1" key={`radio-${adress.adress}; ${adress.floor}`}>
-                    <Card.Body>
-                      <div className="flexed">
-                        <Form.Check
-                          onChange={onPickAdress}
-                          type="radio"
-                          id={`${adress.adress}; ${adress.floor}`}
-                          name="group-radio-adress"
-                          label={`Adress: ${adress.adress}; Floor: ${adress.floor}`}
-                        />
-                      </div>
-                    </Card.Body>
-                  </Card>
-                ))}
-            </div>
-            {/* User adresses mapped end */}
-            {/* Form for entering new adress */}
-            <Card>
-              <Card.Body>
-                <Form id="add-new-adress-form">
-                  <label className="mb-2" htmlFor="adress">
-                    Adress:
-                  </label>
-                  <Form.Control onChange={onChangeForNewAdress} className="mb-3" name="adress" type="text" placeholder="Add adress" />
-                  <label className="mb-2" htmlFor="floor">
-                    Floor:
-                  </label>
-                  <Form.Control onChange={onChangeForNewAdress} className="mb-2" name="floor" type="text" placeholder="Add floor" />
-                  <Button onClick={onAddNewAdress} type="submit" className=" float-right normal-size-button m-1" size="sm">
-                    Add
-                  </Button>
-                  <Button className="float-right normal-size-button m-1" size="sm">
-                    Cancel
-                  </Button>
-                </Form>
-              </Card.Body>
-            </Card>
-            {/* Form for entering new adress end*/}
-          </Card.Body>
-        </Card>
-
-        <Card id="payment">
-          <Card.Header className="flexed" as="section">
-            <h5>Payment </h5>
-            <div style={{ paddingLeft: "20px" }} key="default-radio" className="mb-3">
-              <div className="flexed">
-                <Form.Check
-                  checked
-                  onChange={onPaymentType}
-                  type="checkbox"
-                  id="default-checkbox-payment"
-                  name="Upon delivery"
-                  label="Upon delivery"
-                />
+        <div className="row">
+          {/* User adresses mapped */}
+          <Card className="col col-12 col-md-5 border-0">
+            <h5 className="small-title">Address to deliver</h5>
+            <Card.Body>
+              <div key="default-radio" className="mb-3">
+                {userAdresses &&
+                  userAdresses.map((adress, i) => (
+                    <Card className="mb-1" key={`radio-${adress.adress}; ${adress.floor}`}>
+                      <Card.Body>
+                        <div className="d-flex">
+                          <Form.Check
+                            onChange={onPickAdress}
+                            type="radio"
+                            id={`${adress.adress}; ${adress.floor}`}
+                            name="group-radio-adress"
+                            label={`Adress: ${adress.adress}; Floor: ${adress.floor}`}
+                          />
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  ))}
               </div>
-            </div>
-          </Card.Header>
-          <Card.Body>
-            <h6 className="small-title">YOUR ORDER</h6>
+              {/* User adresses mapped end */}
 
-            {/* Selected dough, price and number input to increase the amount */}
+              {/* Form for entering new adress */}
+              <Card>
+                <Card.Body>
+                  <Form id="add-new-adress-form">
+                    <label className="mb-2" htmlFor="adress">
+                      Adress:
+                    </label>
+                    <Form.Control onChange={onChangeForNewAdress} className="mb-3" name="adress" type="text" placeholder="Add adress" />
+                    <label className="mb-2" htmlFor="floor">
+                      Floor:
+                    </label>
 
-            {pizzas.pizza.map((pizza, i) => {
-              return (
-                <>
-                  {" "}
-                  <Row className="cart-items" style={{ display: "flex" }}>
-                    <div className="flexed item-name">
+                    <Form.Control onChange={onChangeForNewAdress} className="mb-2" name="floor" type="text" placeholder="Add floor" />
+                    <Button onClick={onAddNewAdress} type="submit" className=" float-right normal-size-button m-1" size="sm">
+                      Add
+                    </Button>
+                    <Button className="float-right normal-size-button m-1" size="sm">
+                      Cancel
+                    </Button>
+                  </Form>
+                </Card.Body>
+              </Card>
+              {/* Form for entering new adress end*/}
+            </Card.Body>
+          </Card>
+
+          <Card id="payment" className="col col-12 col-md-7 border-0">
+            <Card.Header className="d-flex" as="section">
+              <h5>Payment </h5>
+              <div style={{ paddingLeft: "20px" }} key="default-radio" className="mb-3">
+                <div className="d-flex">
+                  <Form.Check
+                    checked
+                    onChange={onPaymentType}
+                    type="checkbox"
+                    id="default-checkbox-payment"
+                    name="Upon delivery"
+                    label="Upon delivery"
+                  />
+                </div>
+              </div>
+            </Card.Header>
+            <Card.Body>
+              <h6 className="small-title">YOUR ORDER</h6>
+
+              {/* Selected dough, price and number input to increase the amount */}
+              {pizzas.pizza.map((pizza, i) => {
+                return (
+                  <Row key={i} className="cart-items" style={{ display: "flex" }}>
+                    <div className="d-flex item-name">
                       <h5>{pizza.dough}</h5>
                       <p>${pizza.prices.toFixed(2)}</p>
                       <div className="counter-wrapp" style={{ width: "80px" }}>
@@ -165,7 +167,7 @@ function Order() {
                         </Button>
 
                         <input
-                          className="flexed counter-input"
+                          className="d-flex counter-input"
                           style={{ width: "80%", height: "100%", textAlign: "center" }}
                           type="text"
                           value={pizza.amount}
@@ -184,49 +186,54 @@ function Order() {
                         })}
                     </p>
                   </Row>
-                </>
-              );
-            })}
+                );
+              })}
 
-            <Row className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
-              <div className="flexed">
-                <p id="delivery">Delivery</p>
-                <p id="price">{delivery.toFixed(2)}</p>
-              </div>
+              {/* checkout */}
+              <Row className="chechkout-items" style={{ display: "flex", marginTop: "15px" }}>
+                <div className="d-flex">
+                  <p id="delivery">Delivery</p>
+                  <p id="price">{delivery.toFixed(2)}</p>
+                </div>
+                <hr></hr>
+                <div className="d-flex">
+                  <p id="total">
+                    <strong>TOTAL</strong>
+                  </p>
+                  <p id="price">
+                    <strong>${total.toFixed(2)}</strong>
+                  </p>
+                </div>
+              </Row>
               <hr></hr>
-              <div className="flexed">
-                <p id="total" className="bold">
-                  TOTAL
-                </p>
-                <p className="bold" id="price">
-                  ${total.toFixed(2)}
-                </p>
-              </div>
-            </Row>
-            <hr></hr>
-            <Form.Control onChange={onNoteType} as="textarea" placeholder="Leave an optional note" />
-            <p>{error}</p>
-            {showOrderInfo ? (
-              <>
-                <p> Order is on it's way</p>
-                <Button
-                  onClick={() => {
-                    history.push("/");
-                    dispatch(infoHidden());
-                  }}
-                  className="normal-size-button centered mt-2"
-                  size="sm"
-                >
-                  Home
+              <Form.Control onChange={onNoteType} as="textarea" placeholder="Leave an optional note" />
+              {error && (
+                <div className="alert alert-warning" role="alert">
+                  <p>{error}</p>
+                </div>
+              )}
+              {showOrderInfo ? (
+                <div className="alert alert-success" role="alert">
+                  <p> Order is on it's way</p>
+                  <Button
+                    onClick={() => {
+                      history.push("/");
+                      dispatch(infoHidden());
+                    }}
+                    className="normal-size-button centered mt-2"
+                    size="sm"
+                  >
+                    Home
+                  </Button>
+                </div>
+              ) : (
+                <Button onClick={onOrder} type="submit" className="normal-size-button centered mt-2" size="sm">
+                  Order
                 </Button>
-              </>
-            ) : (
-              <Button onClick={onOrder} type="submit" className="normal-size-button centered mt-2" size="sm">
-                Order
-              </Button>
-            )}
-          </Card.Body>
-        </Card>
+              )}
+            </Card.Body>
+          </Card>
+        </div>
       </Form>
     </Container>
   );
