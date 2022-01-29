@@ -1,11 +1,12 @@
 require("dotenv").config();
 const express = require("express");
-const mogoose = require("mongoose");
+const mongoose = require("mongoose");
 const cors = require("cors");
+const config = require("../config");
 
-const PORT = process.env.PORT || 5000;
+const PORT = config.port || 5000;
 
-const auth = require("./midleware/auth");
+const auth = require("./middleware/auth");
 
 const userRoute = require("./routes/userRoute");
 const orderRoute = require("./routes/orderRoute");
@@ -23,11 +24,11 @@ app.use("/adress", auth, adressRoute);
 
 app.use(express.static("./src/public"));
 
-mogoose
-  .connect(`${process.env.MONGO_URI}/${process.env.PROJECTNUMBERDB}?retryWrites=true&w=majority`)
+mongoose
+  .connect(config.mongo)
   .then(() => {
     app.listen(PORT);
-    console.log(`Server started on port ${PORT}`);
+    console.log(`Server started on port ${config.port}`);
   })
   .catch((err) => {
     console.log(err);
