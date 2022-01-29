@@ -76,6 +76,7 @@ function Header() {
                   dispatch(logOut({ user: "", loggedIn: false }));
                   sessionStorage.removeItem("user");
                   setLoggedInUser("");
+                  history.push("/");
                 }}
               >
                 Logout
