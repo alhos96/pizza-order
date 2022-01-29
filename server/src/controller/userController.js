@@ -1,6 +1,7 @@
 const { User } = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const config = require("../../config");
 
 exports.register = async (req, res, next) => {
   const { name, email, password, confirmPassword } = req.body;
@@ -155,7 +156,7 @@ exports.login = async (req, res, next) => {
   let token;
 
   try {
-    token = jwt.sign({ userId: existingUser.id }, process.env.JWT_SECRET);
+    token = jwt.sign({ userId: existingUser.id }, config.secret);
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong when hashing pasword!",

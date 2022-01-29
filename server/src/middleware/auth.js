@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const config = require("../../config");
 
 module.exports = (req, res, next) => {
   try {
@@ -9,7 +10,7 @@ module.exports = (req, res, next) => {
       throw new Error("Authentication failed!");
     }
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.verify(token, config.secret);
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (error) {
