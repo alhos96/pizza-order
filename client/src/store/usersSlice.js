@@ -15,6 +15,7 @@ const slice = createSlice({
       users.registrationSuccessfull = false;
       users.user = action.payload.data.token;
       users.registrationSuccessfull = false;
+      sessionStorage.setItem("user", action.payload.data.token);
     },
 
     userRegistered: (users, action) => {
